@@ -1,0 +1,51 @@
+{% set name = "uptrace" %}
+{% set version = "1.26.0" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/uptrace-{{ version }}.tar.gz
+  sha256: 968e7196bdac31a2a15563094f4f537ccda232950f77fd43a27ab75bcc8d1ae5
+
+build:
+  noarch: python
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  number: 0
+
+requirements:
+  host:
+    - python >=3.7
+    - pip
+  run:
+    - python >=3.7
+    - opentelemetry-api >=1.26,<2.dev0
+    - opentelemetry-sdk >=1.26,<2.dev0
+    - opentelemetry-exporter-otlp >=1.26,<2.dev0
+    - opentelemetry-instrumentation >=0.47b0,<1.dev0
+
+test:
+  imports:
+    - uptrace
+  commands:
+    - pip check
+  requires:
+    - pip
+
+about:
+  home: https://uptrace.dev
+  summary: OpenTelemetry Python distribution for Uptrace
+  license: BSD-2-Clause
+  license_file: LICENSE
+  dev_url: https://uptrace.dev
+  doc_url: https://uptrace.dev
+
+
+extra:
+  anaconda-services:
+    ref: https://anaconda.zendesk.com/agent/tickets/49522
+    reason: Dependency for chainlit
+  recipe-maintainers:
+    - ianaobi
+
